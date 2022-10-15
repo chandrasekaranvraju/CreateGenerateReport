@@ -45,21 +45,14 @@ public class CreateGenerateReportScheduler {
 
     public String generateFileName() throws IOException {
         if(fileName != null){
-            logger.info("check filePath "+outputPath+fileName);
             BasicFileAttributes fileAttributes = Files.readAttributes(new File(outputPath+fileName).toPath(), BasicFileAttributes.class);
-            logger.info("time "+fileAttributes.lastAccessTime().to(TimeUnit.MILLISECONDS)+" "+System.currentTimeMillis());
-            logger.info("time difference" + (System.currentTimeMillis() - fileAttributes.lastAccessTime().to(TimeUnit.MILLISECONDS)));
-
             if ((System.currentTimeMillis() - fileAttributes.lastAccessTime().to(TimeUnit.MILLISECONDS)) >= 5 * 60 * 1000) {
-                logger.info("New file to be created");
                 String fileTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
                 fileName = MessageFormat.format(outputFileName, fileTime);
-                logger.info("new filePath "+fileName);
             }
         }else{
             String fileTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
             fileName = MessageFormat.format(outputFileName, fileTime);
-            logger.info("first filePath "+fileName);
         }
         return fileName;
     }

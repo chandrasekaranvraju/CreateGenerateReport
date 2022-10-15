@@ -11,6 +11,7 @@ generateReport:
   readpath: output/data/
   reportpath: output/report/
   filename: WeatherAggregateReport{0}.csv
+  prefix: WeatherRawData
   cron:
     expression: 0 */10 * * * ?
 

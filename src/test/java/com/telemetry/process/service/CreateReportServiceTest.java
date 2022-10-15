@@ -70,7 +70,7 @@ class CreateReportServiceTest {
         String response = "<data><id>0105</id><temperature>75</temperature><humidity>75</humidity><location>35.56,45.98</location></data>";
         ResponseEntity<String> responseEntity = new ResponseEntity<>(response,HttpStatus.OK);
         Mockito.when(restTemplate.getForEntity(telemetryUrl, String.class)).thenReturn(responseEntity);
-        String telemetryResponse = reportService.fetchWeatherData();
+        String telemetryResponse = reportService.fetchTelemetryData();
         assertEquals(response, telemetryResponse);
     }
 }
