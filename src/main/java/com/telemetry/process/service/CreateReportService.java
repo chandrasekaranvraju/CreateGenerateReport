@@ -101,7 +101,7 @@ public class CreateReportService implements ICreateReportService {
             CSVPrinter csvPrinter = new CSVPrinter(writer,
                     CSVFormat.DEFAULT.builder().setSkipHeaderRecord(csvOutputFile.exists())
                             .setHeader("id", "temperature", "humidity", "location", "timestamp").build());
-            logger.info("Writing file in cvs format");
+            logger.info("Writing file in csv format");
             csvPrinter.printRecord(weatherInfo.getId(), weatherInfo.getTemperature(), weatherInfo.getHumidity(), weatherInfo.getLocation(), weatherInfo.getTimestamp());
             csvPrinter.flush();
             csvPrinter.close();
