@@ -43,21 +43,21 @@ public class GenerateReportService implements IGenerateReportService{
         logger.info("Generate Report Scheduled");
         try{
             List<WeatherInfo> info = new ArrayList<>();
-            List<File> reportFile = listFilesForAggregation();
+            List<File> reportFile = listFilesForAggregation(dataPath, filePrefix);
             logger.info("Number of files available for aggregation in the specified duration "+reportFile.size());
             info = readDataFromFile(reportFile);
             logger.info("Data matching criteria (temperature > 45)"+ " No of files matched " + info.size());
-            writeToCSVFile(info);
+            writeToCSVFile(info, reportPath, reportFileName);
         } catch(Exception e){
             throw new ProcessingException("Exception occurred in generate "+ e);
         }
     }
 
-    public List<File> listFilesForAggregation(){
+    public List<File> listFilesForAggregation(String path, String fileName){
         List<File> reportFile = new ArrayList<>();
         try {
-            File[] files = new File(dataPath).listFiles(file -> file.isFile()
-                    && file.getName().startsWith(filePrefix) && file.getName().endsWith(".csv"));
+            File[] files = new File(path).listFiles(file -> file.isFile()
+                    && file.getName().startsWith(fileName) && file.getName().endsWith(".csv"));
             logger.info("Number of raw data files " + files.length);
             for (File f : files) {
                 BasicFileAttributes
@@ -90,7 +90,7 @@ public class GenerateReportService implements IGenerateReportService{
         return info;
     }
 
-    public <T> void writeToCSVFile(T t)  {
+    public <T> void writeToCSVFile(T t, String reportPath, String reportFileName)  {
         List<WeatherInfo> info = (List<WeatherInfo>) t;
         String fileName = new StringBuilder()
                 .append(reportPath)
@@ -114,7 +114,7 @@ public class GenerateReportService implements IGenerateReportService{
         }
     }
 
-    private WeatherInfo mapToWeatherInfo(CSVRecord csvRecord) {
+    public WeatherInfo mapToWeatherInfo(CSVRecord csvRecord) {
         return  new WeatherInfo(Integer.parseInt(csvRecord.get(0)),
                 Integer.parseInt(csvRecord.get(1)),
                 Integer.parseInt(csvRecord.get(2)),csvRecord.get(3),csvRecord.get(4));

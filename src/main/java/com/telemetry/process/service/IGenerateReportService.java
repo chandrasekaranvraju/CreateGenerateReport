@@ -15,6 +15,6 @@ public interface IGenerateReportService {
 
     void generate();
 
-    public <T> void writeToCSVFile(T t) ;
+    public <T> void writeToCSVFile(T t, String reportPath, String reportFileName) ;
 
 }
