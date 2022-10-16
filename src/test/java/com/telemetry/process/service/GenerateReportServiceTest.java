@@ -64,7 +64,10 @@ class GenerateReportServiceTest {
     @Test
     void mapToWeatherInfo_test() throws IOException {
         Reader in = new FileReader(new File("src/test/resources/test1.csv"));
-        Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
+        Iterable<CSVRecord> records = CSVFormat.DEFAULT
+                .builder().setSkipHeaderRecord(true)
+                .setHeader("id", "temperature", "humidity","location","timestamp")
+                .build().parse(in);
         for(CSVRecord record: records) {
             WeatherInfo info = generateReportService.mapToWeatherInfo(record);
             assertEquals(record.get(0), String.valueOf(info.getId()));
