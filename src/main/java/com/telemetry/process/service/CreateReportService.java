@@ -97,9 +97,11 @@ public class CreateReportService implements ICreateReportService {
         WeatherInfo weatherInfo = (WeatherInfo) t;
 
         logger.info("Writing file in path " + csvOutputFile.getAbsolutePath());
+        boolean setHeader = csvOutputFile.exists();
         try(FileWriter writer = new FileWriter(csvOutputFile.getAbsolutePath(), true)){
+
             CSVPrinter csvPrinter = new CSVPrinter(writer,
-                    CSVFormat.DEFAULT.builder().setSkipHeaderRecord(csvOutputFile.exists())
+                    CSVFormat.DEFAULT.builder().setSkipHeaderRecord(setHeader)
                             .setHeader("id", "temperature", "humidity", "location", "timestamp").build());
             logger.info("Writing file in csv format");
             csvPrinter.printRecord(weatherInfo.getId(), weatherInfo.getTemperature(), weatherInfo.getHumidity(), weatherInfo.getLocation(), weatherInfo.getTimestamp());

@@ -1,0 +1,19 @@
+server:
+  port: 9191
+telemetry:
+  url: https://whispering-temple-65255.herokuapp.com/xmlTelemetry
+createReport:
+  path: output/data/
+  filename: WeatherRawData{0}.csv
+  cron:
+    expression: 0 */1 * * * ?
+generateReport:
+  readpath: output/data/
+  reportpath: output/report/
+  filename: WeatherAggregateReport{0}.csv
+  prefix: WeatherRawData
+  cron:
+    expression: 0 */10 * * * ?
+
+
+

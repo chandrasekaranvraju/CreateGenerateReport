@@ -76,11 +76,11 @@ public class GenerateReportService implements IGenerateReportService{
         for(File f: reportFile){
             try(Reader in = new FileReader(f)){
                 Iterable<CSVRecord> records = CSVFormat.DEFAULT
-                            .builder().setSkipHeaderRecord(true).build()
+                            .builder().setSkipHeaderRecord(true).setHeader("id", "temperature", "humidity","location","timestamp")
+                            .build()
                             .parse(in);
-
                 info.addAll(StreamSupport.stream(records.spliterator(), false)
-                    .filter(s -> Integer.parseInt(s.get(1)) >= 45)
+                    .filter(s -> (Integer.parseInt(s.get(1)) >= 45))
                     .map(r -> mapToWeatherInfo(r))
                     .toList());
             } catch (IOException e) {
@@ -101,7 +101,8 @@ public class GenerateReportService implements IGenerateReportService{
         try(FileWriter writer = new FileWriter(reportFile.getAbsolutePath(),true)){
             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
                         .builder().setSkipHeaderRecord(false)
-                        .setHeader("id", "temperature", "humidity","location","timestamp").build());
+                        .setHeader("id", "temperature", "humidity","location","timestamp")
+                    .build());
 
             for(WeatherInfo weather: info) {
                 logger.debug("Writing to CSV File" + weather);
